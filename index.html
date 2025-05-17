@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Advanced Notes App - Topics & Full Notes</title>
+<title>Advanced Notes App - Responsive & Styled Notes</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
   * {
@@ -17,6 +17,7 @@
     color: #000;
     display: flex;
     flex-direction: column;
+    min-height: 100vh;
   }
   main {
     flex: 1;
@@ -79,11 +80,18 @@
     flex-direction: column;
     width: 100%;
     box-sizing: border-box;
+    /* Added modern card style */
+    border-radius: 12px;
+    box-shadow:
+      rgba(0, 0, 0, 0.07) 0px 1px 3px,
+      rgba(0, 0, 0, 0.06) 0px 1px 2px;
   }
   #note-header {
     display: flex;
     align-items: center;
     margin-bottom: 1.5rem;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 0.75rem;
   }
   #back-button {
     background: #000;
@@ -111,6 +119,7 @@
     font-size: 2.2rem;
     user-select: text;
     flex: 1;
+    color: #111;
   }
   #note-subject {
     font-style: italic;
@@ -122,10 +131,11 @@
   #note-content {
     margin-top: 1.5rem;
     white-space: pre-wrap;
-    font-size: 1.1rem;
-    line-height: 1.6;
+    font-size: 1.15rem;
+    line-height: 1.7;
     user-select: text;
     max-width: 900px;
+    color: #333;
   }
   #note-empty-message {
     font-size: 1.1rem;
@@ -144,7 +154,8 @@
     user-select: none;
     position: relative;
     overflow-x: auto;
-    /* Allow horizontal scroll for small width */
+    padding: 0 8px;
+    /* Allow horizontal scroll for overflowing subjects */
   }
   nav#bottom-nav::-webkit-scrollbar {
     height: 6px;
