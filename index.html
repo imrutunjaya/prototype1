@@ -3,602 +3,628 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Study Dictionary & Current Affairs</title>
-<!-- Font Awesome CDN for icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-<!-- Papa Parse CDN for CSV parsing -->
-<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+<title>Advanced Notes App - Topics & Full Notes</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
-
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
   * {
     box-sizing: border-box;
   }
-
   body, html {
     margin: 0; padding: 0;
-    font-family: 'Poppins', sans-serif;
-    background: #ffffff;
-    color: #000000;
-    height: 100vh;
+    height: 100%;
+    font-family: 'Inter', sans-serif;
+    background: #fff;
+    color: #000;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
   }
-
-  header {
-    background: #ffffff;
-    border-bottom: 1px solid #ccc;
-    color: #000;
-    padding: 10px 16px;
-    text-align: center;
-    font-weight: 600;
-    font-size: 14px;
-    user-select: none;
-    position: relative;
-  }
-
   main {
     flex: 1;
+    display: flex;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+  }
+  /* Topics panel */
+  #topics-panel {
+    min-width: 300px;
+    max-width: 400px;
+    border-right: 1px solid #ddd;
+    background: #f7f7f7;
     overflow-y: auto;
-    padding: 14px 12px 90px 12px;
-    max-width: 900px;
-    margin: auto;
-    width: 100%;
-  }
-
-  /* File load button */
-  #loadFileBtn {
-    position: fixed;
-    top: 12px;
-    left: 16px;
-    background: #000000;
-    color: white;
-    border: none;
-    padding: 8px 18px;
-    font-size: 14px;
-    border-radius: 3px;
-    user-select: none;
-    cursor: pointer;
-    z-index: 1103;
-  }
-  #loadFileBtn:hover {
-    background-color: #222222;
-  }
-  #fileInput {
-    display: none;
-  }
-
-  /* Bottom Navigation Bar */
-  footer {
-    background: #ffffff;
-    box-shadow: 0 -1px 5px rgba(0,0,0,0.1);
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    height: 56px;
     display: flex;
-    justify-content: space-around;
-    align-items: center;
-    padding: 0 8px;
-    z-index: 1000;
-    border-top: 1px solid #ccc;
+    flex-direction: column;
   }
-
-  .bubble-nav {
-    background-color: #000000;
-    border: none;
-    padding: 8px 20px;
+  #topics-header {
     font-weight: 600;
-    color: white;
-    cursor: pointer;
-    font-size: 12px;
-    min-width: 80px;
-    text-align: center;
+    font-size: 1.3rem;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #ddd;
     user-select: none;
-    transition: background-color 0.2s ease, transform 0.2s ease;
-    border-radius: 4px;
-    letter-spacing: 0.05em;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-  }
-  .bubble-nav i {
-    font-size: 1.1rem;
-  }
-  .bubble-nav.active {
-    background-color: #222222;
-    transform: scale(1.1);
-  }
-  .bubble-nav:hover:not(.active) {
-    background-color: #333333;
-  }
-
-  /* Search Bar */
-  #searchBar {
-    position: fixed;
-    bottom: 65px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 90%;
-    max-width: 700px;
-    background: white;
-    border: 1px solid #000;
-    padding: 6px 14px;
-    display: none;
-    z-index: 1050;
-  }
-  #searchInput {
     width: 100%;
-    padding: 8px 12px;
-    font-size: 14px;
-    border: none;
-    outline: none;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-    color: #000;
-    background: #f9f9f9;
-    border-radius: 5px;
     box-sizing: border-box;
   }
-  #searchInput::placeholder {
-    color: #666;
-  }
-  #searchInput:focus {
-    outline: none;
-    box-shadow: 0 0 8px #000000aa;
-  }
-  #searchToggle {
-    background: #000000;
-    border: none;
-    cursor: pointer;
-    position: fixed;
-    bottom: 120px;
-    right: 16px;
-    z-index: 1100;
-    font-size: 28px;
-    color: white;
-    width: 48px;
-    height: 48px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    user-select: none;
-    border-radius: 6px;
-    box-shadow: none;
-    transition: background-color 0.2s ease;
-  }
-  #searchToggle:hover {
-    background-color: #222222;
-  }
-
-  /* Topic List */
-  #topicList {
+  #topics-list {
     list-style: none;
     padding: 0;
-    margin: 0 auto;
-    max-width: 840px;
+    margin: 0;
+    flex-grow: 1;
+    width: 100%;
   }
-  .topic-item {
-    background: #fefefe;
-    border: 2px solid #000000;
-    margin-bottom: 10px;
-    padding: 16px 22px;
+  #topics-list li button {
+    width: 100%;
+    padding: 1rem 1.5rem;
+    border: none;
+    background: #fff;
+    border-bottom: 1px solid #ddd;
+    color: #000;
+    font-size: 1.1rem;
+    text-align: left;
     cursor: pointer;
-    font-weight: 700;
-    color: #000000;
-    font-size: 14px;
+    transition: background-color 0.25s ease;
+    box-sizing: border-box;
+  }
+  #topics-list li button:hover,
+  #topics-list li button.active {
+    background-color: #e0e0e0;
+    font-weight: 600;
+  }
+  /* Full note view panel */
+  #note-panel {
+    flex-grow: 1;
+    padding: 2rem 2.5rem;
+    background: #fff;
+    overflow-y: auto;
+    display: none;
+    flex-direction: column;
     width: 100%;
     box-sizing: border-box;
-    user-select: none;
-    border-radius: 6px;
+  }
+  #note-header {
     display: flex;
     align-items: center;
-    gap: 12px;
-    transition: background-color 0.3s, color 0.3s;
+    margin-bottom: 1.5rem;
   }
-  .topic-item i {
-    font-size: 1.25rem;
-    color: #000;
-    flex-shrink: 0;
-  }
-  .topic-item:hover {
-    background-color: #000000;
-    color: #ffffff;
-    border-color: #000000;
-  }
-  .topic-item:focus-visible {
-    outline: 3px solid #000000;
-    outline-offset: 3px;
-    background-color: #222222;
-    color: #fff;
-  }
-
-  /* Reading Page */
-  #readingPage {
-    display: none;
-    max-width: 900px;
-    margin: 0 auto 90px;
-    background: #ffffff;
-    border: 2px solid #000000;
-    padding: 40px 48px;
-    line-height: 1.6;
-    color: #000000;
-    font-size: 16px;
-    border-radius: 8px;
-    box-sizing: border-box;
-    overflow-y: auto;
-  }
-  #readingPage h2 {
-    color: #000000;
-    margin-top: 0;
-    font-size: 28px;
-    font-weight: 800;
-    margin-bottom: 36px;
-    letter-spacing: 0.05em;
-  }
-  #readingPage h3 {
-    margin-top: 40px;
-    margin-bottom: 20px;
-    font-weight: 700;
-    color: #222222;
-    font-size: 22px;
-  }
-  #readingPage ul {
-    margin-left: 30px;
-    margin-bottom: 32px;
-    color: #111;
-    font-size: 16px;
-  }
-  #readingPage p {
-    margin-bottom: 24px;
-  }
-  #readingPage pre {
-    background: #f4f4f4;
-    padding: 18px;
-    overflow-x: auto;
-    border-radius: 6px;
-    font-size: 13px;
-    color: #333333;
-    margin-bottom: 24px;
-    font-family: "Courier New", Courier, monospace;
-  }
-  #backToTopics {
-    margin-bottom: 32px;
-    background: #000000;
-    color: white;
+  #back-button {
+    background: #000;
     border: none;
-    padding: 16px 36px;
+    color: #fff;
+    padding: 0.5rem 0.9rem;
+    font-size: 1.7rem;
     font-weight: 700;
-    font-size: 15px;
+    line-height: 1;
     cursor: pointer;
     border-radius: 8px;
     user-select: none;
+    margin-right: 1.25rem;
     transition: background-color 0.25s ease;
     display: flex;
     align-items: center;
-    gap: 14px;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgb(0 0 0 / 0.2);
   }
-  #backToTopics i {
-    font-size: 1.5rem;
+  #back-button:hover {
+    background-color: #222;
   }
-  #backToTopics:hover {
-    background-color: #222222;
+  #note-title {
+    font-weight: 700;
+    font-size: 2.2rem;
+    user-select: text;
+    flex: 1;
   }
-
-  /* Current Affairs reading style */
-  .current-affairs-carousel {
+  #note-subject {
+    font-style: italic;
+    margin-top: 0.3rem;
+    color: #555;
+    font-size: 0.95rem;
+    user-select: text;
+  }
+  #note-content {
+    margin-top: 1.5rem;
+    white-space: pre-wrap;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    user-select: text;
     max-width: 900px;
-    margin: 0 auto;
-    background: #ffffff;
-    border: 2px solid #000000;
-    padding: 40px 48px;
-    color: #000000;
-    min-height: 280px;
+  }
+  #note-empty-message {
+    font-size: 1.1rem;
+    line-height: 1.5;
+    color: #666;
+    margin-top: 1rem;
+  }
+  /* Bottom nav for subjects + search */
+  nav#bottom-nav {
+    height: 56px;
+    background: #f7f7f7;
+    border-top: 1px solid #ddd;
+    display: flex;
+    align-items: center;
+    font-weight: 600;
+    user-select: none;
+    position: relative;
+    overflow-x: auto;
+    /* Allow horizontal scroll for small width */
+  }
+  nav#bottom-nav::-webkit-scrollbar {
+    height: 6px;
+  }
+  nav#bottom-nav::-webkit-scrollbar-thumb {
+    background: rgba(0,0,0,0.15);
+    border-radius: 3px;
+  }
+  nav#bottom-nav::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  nav#bottom-nav button.subject-btn,
+  nav#bottom-nav button#search-btn {
+    background: #fff;
+    border: none;
+    margin: 0 6px;
+    padding: 0.5rem 1.2rem;
+    border-radius: 6px;
+    cursor: pointer;
+    color: #000;
+    font-weight: 600;
+    font-size: 1rem;
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: background-color 0.25s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  nav#bottom-nav button.subject-btn.active,
+  nav#bottom-nav button.subject-btn[aria-pressed="true"] {
+    background-color: #000;
+    color: #fff;
+    cursor: default;
+  }
+  nav#bottom-nav button.subject-btn:hover:not(.active),
+  nav#bottom-nav button#search-btn:hover {
+    background-color: #ddd;
+  }
+  nav#bottom-nav button#search-btn svg {
+    width: 20px;
+    height: 20px;
+    fill: #000;
+  }
+  /* Search overlay */
+  #search-overlay {
+    position: fixed;
+    top: 0; left: 0; bottom: 0; right: 0;
+    background: rgba(0,0,0,0.55);
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem 1rem;
+    z-index: 9999;
+  }
+  #search-box {
+    background: #fff;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 650px;
+    padding: 1rem 1.5rem;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.3);
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    font-weight: 700;
-    font-size: 16px;
-    border-radius: 8px;
+    max-height: 80vh;
   }
-  .carousel-title {
-    font-size: 28px;
-    margin-bottom: 24px;
-    color: #000000;
-    font-weight: 800;
+  #search-input {
+    font-size: 1.15rem;
+    padding: 0.7rem 1rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    outline-offset: 2px;
   }
-  .carousel-date {
-    font-style: italic;
-    color: #444444;
-    margin-bottom: 32px;
-    font-size: 14px;
+  #search-results {
+    margin-top: 1rem;
+    list-style: none;
+    padding: 0;
+    overflow-y: auto;
+    flex-grow: 1;
+    max-height: 50vh;
   }
-  .carousel-content {
-    font-size: 16px;
-    line-height: 1.75;
-    font-weight: 700;
-    color: #222222;
+  #search-results li {
+    border-bottom: 1px solid #ddd;
   }
-  .no-result {
-    font-weight: 700;
-    font-size: 14px;
-    color: #555555;
-    padding: 80px 0;
-    text-align: center;
+  #search-results li button {
+    background: #fff;
+    border: none;
+    width: 100%;
+    text-align: left;
+    padding: 0.7rem 1rem;
+    font-size: 1rem;
+    color: #000;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  #search-results li button:hover {
+    background-color: #e0e0e0;
+  }
+  #search-close-btn {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #333;
+    font-weight: 600;
+    align-self: flex-end;
+    cursor: pointer;
+    margin-top: 0.3rem;
+  }
+  #search-close-btn:hover {
+    color: #000;
+  }
+  /* Responsive adjustments */
+  @media (max-width: 720px) {
+    main {
+      flex-direction: column;
+    }
+    #topics-panel {
+      width: 100%;
+      max-width: none;
+      height: 180px;
+      border-right: none;
+      border-bottom: 1px solid #ddd;
+      overflow-x: auto;
+      overflow-y: hidden;
+      flex-shrink: 0;
+      flex-direction: row;
+    }
+    #topics-header {
+      flex-shrink: 0;
+      font-size: 1rem;
+      padding: 1rem 1.5rem 0.5rem 1rem;
+      border-bottom: none;
+      white-space: nowrap;
+      align-self: center;
+      user-select: none;
+      width: auto;
+    }
+    #topics-list {
+      display: flex;
+      margin: 0 1rem;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding: 0;
+      flex-grow: 1;
+      width: auto;
+    }
+    #topics-list li {
+      flex-shrink: 0;
+      border: none;
+      margin-right: 12px;
+      width: auto;
+    }
+    #topics-list li button {
+      border-radius: 6px;
+      padding: 0.55rem 1rem;
+      box-shadow: 0 1px 3px rgb(0 0 0 / 0.1);
+      white-space: nowrap;
+      border-bottom: none;
+      width: auto;
+      font-size: 1rem;
+    }
+    #note-panel {
+      padding: 1rem 1rem 2rem 1rem;
+      height: calc(100vh - 180px - 56px);
+      overflow-y: auto;
+      width: 100%;
+      max-width: none;
+    }
+    #note-header {
+      margin-bottom: 1rem;
+      padding-left: 0.5rem;
+    }
   }
 </style>
 </head>
 <body>
-<button id="loadFileBtn" aria-label="Load Topics CSV"><i class="fa-solid fa-file-csv"></i> Load Topics CSV</button>
-<input type="file" id="fileInput" accept=".csv,text/csv" />
-
-<header id="appHeader" tabindex="0" aria-live="polite" aria-atomic="true" aria-busy="false">Current Affairs</header>
-<div id="loadingIndicator" aria-hidden="true" style="display:none; position: absolute; right: 16px; top: 50%; transform: translateY(-50%); font-size: 16px; color: #1e3a8a; user-select: none;">Loading…</div>
-
 <main>
-  <!-- Topic List Page -->
-  <ul id="topicList" role="list" aria-label="Subject topics"></ul>
 
-  <!-- Reading Page: detailed content with back button -->
-  <section id="readingPage" tabindex="0" aria-live="polite" aria-atomic="true" style="display:none;">
-    <button id="backToTopics" aria-label="Back to topic list"><i class="fa-solid fa-arrow-left"></i> Back to Topics</button>
-    <div id="readingContent"></div>
+  <!-- Topics panel -->
+  <section id="topics-panel" aria-label="Topics List">
+    <div id="topics-header" tabindex="0" aria-live="polite">Select a subject to view topics</div>
+    <ul id="topics-list" tabindex="0" aria-label="Topic list"></ul>
   </section>
+
+  <!-- Full note view panel -->
+  <section id="note-panel" aria-label="Full Note Display" style="display:none;">
+    <div id="note-header">
+      <button id="back-button" aria-label="Go back to topic list" title="Back to topics">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" width="24" height="24" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <div>
+        <div id="note-title"></div>
+        <div id="note-subject" style="font-style:italic; color:#555; font-size:0.95rem;"></div>
+      </div>
+    </div>
+    <div id="note-content" role="region" aria-live="polite" aria-atomic="true">
+      <div id="note-empty-message">Select a topic to view its notes.</div>
+    </div>
+  </section>
+
 </main>
 
-<button id="searchToggle" aria-label="Toggle Search" title="Search" style="position: fixed; bottom: 120px; right: 16px; width: 56px; height: 56px; border-radius: 6px; background: #000; color: #fff; border: none; cursor: pointer; display: flex; justify-content: center; align-items: center; user-select: none; font-size: 28px; z-index: 1100;"><i class="fa-solid fa-magnifying-glass"></i></button>
-<div id="searchBar" role="search" style="position: fixed; bottom: 65px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 700px; background: white; border: 1px solid #000; padding: 8px 16px; display: none; z-index: 1050;">
-  <input type="search" id="searchInput" placeholder="Search notes and topics..." aria-label="Search notes and topics" autocomplete="off"
-         style="width: 100%; padding: 8px 16px; font-size: 14px; border: none; outline: none; font-weight: 700; letter-spacing: 0.03em; color: #000; background: #f9f9f9; border-radius: 6px; box-sizing: border-box;" />
+<!-- Bottom nav for subjects + search -->
+<nav id="bottom-nav" role="navigation" aria-label="Subject navigation"></nav>
+
+<!-- Search overlay -->
+<div id="search-overlay" role="dialog" aria-modal="true" aria-labelledby="search-input" tabindex="-1">
+  <div id="search-box">
+    <button id="search-close-btn" aria-label="Close search">&times;</button>
+    <input type="search" id="search-input" placeholder="Search topics..." aria-describedby="search-desc" autocomplete="off" />
+    <div id="search-desc" style="font-size:0.85rem; color:#555; margin-top: 4px;">Type to search topics across all subjects</div>
+    <ul id="search-results" aria-label="Search results" tabindex="0"></ul>
+  </div>
 </div>
 
-<footer role="tablist" aria-label="Primary subjects navigation" style="background: #fff; border-top: 1px solid #ccc; box-shadow: 0 -1px 5px rgba(0,0,0,0.1); position: fixed; bottom: 0; width: 100%; height: 56px; display: flex; justify-content: space-around; align-items: center; padding: 0 8px; z-index: 1000;">
-  <button class="bubble-nav" data-subject="current" aria-selected="true" role="tab" tabindex="0" aria-controls="topicList" aria-label="Current Affairs"><i class="fa-solid fa-globe"></i>Current</button>
-  <button class="bubble-nav" data-subject="math" aria-selected="false" role="tab" tabindex="-1" aria-controls="topicList" aria-label="Math"><i class="fa-solid fa-square-root-variable"></i>Math</button>
-  <button class="bubble-nav" data-subject="english" aria-selected="false" role="tab" tabindex="-1" aria-controls="topicList" aria-label="English Grammar"><i class="fa-solid fa-book-open"></i>English</button>
-  <button class="bubble-nav" data-subject="computer" aria-selected="false" role="tab" tabindex="-1" aria-controls="topicList" aria-label="Computer"><i class="fa-solid fa-laptop-code"></i>Computer</button>
-</footer>
-
-<script src="https://kit.fontawesome.com/a81368914c.js" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 <script>
-(() => {
-  let data = {
-    current: {
-      name: "Current Affairs",
-      topics: {
-        "event1": {
-          title: "Global Climate Summit 2024",
-          description: "International commitments to climate action.",
-          detailed: `<h3>Overview</h3><p>In 2024, the global climate summit brought agreements among nations to reduce emissions and invest in sustainable technologies...</p>`,
-          date: "April 2024",
-          content: "World leaders' commitments for a better planet."
-        },
-        "event2": {
-          title: "Space Tourism Breakthrough",
-          description: "Historic commercial private space flight.",
-          detailed: `<h3>Flight milestone</h3><p>Advances in reusable rockets enable new tourism possibilities...</p>`,
-          date: "May 2024",
-          content: "Opening space for all."
+  (function(){
+    let notesData = {
+      "Math": {
+        "Algebra": "Algebra is the study of mathematical symbols and the rules for manipulating these symbols. Includes operations like solving equations.",
+        "Geometry": "Geometry deals with the properties and relations of points, lines, surfaces, and solids.",
+        "Calculus": "Calculus involves the study of change, in the form of differentiation and integration."
+      },
+      "English": {
+        "Grammar": "Grammar is the set of structural rules governing the composition of clauses, phrases, and words in English.",
+        "Literature": "Literature includes written works such as poems, plays, novels, and essays.",
+        "Vocabulary": "Vocabulary represents the words known and used within a language."
+      },
+      "General Knowledge": {
+        "World Capitals": "A list of important capitals around the world, e.g. Washington D.C. (USA), Tokyo (Japan), Paris (France).",
+        "Famous Personalities": "Details about influential people in history and contemporary times."
+      },
+      "Computer": {
+        "Programming Basics": "Programming involves writing instructions for computers using languages like Python, JavaScript, and C++.",
+        "Data Structures": "Data structures organize and store data efficiently, examples: arrays, linked lists, trees, and graphs."
+      },
+      "Formula": {
+        "Physics Formulas": "Physics formulas include E=mc², F=ma, and formulas for velocity, acceleration, and more.",
+        "Math Formulas": "Common math formulas like quadratic formula, area of circle, Pythagorean theorem."
+      },
+      "Tricks": {
+        "Math Tricks": "Math tricks help quickly solve problems, for example multiplying by 11, squaring numbers ending with 5.",
+        "Memory Tricks": "Techniques to improve memory such as mnemonics, visualization, and chunking."
+      }
+    };
+
+    let currentSubject = null;
+    let currentTopic = null;
+
+    const bottomNav = document.getElementById('bottom-nav');
+    const topicsHeader = document.getElementById('topics-header');
+    const topicsList = document.getElementById('topics-list');
+    const notePanel = document.getElementById('note-panel');
+    const noteHeader = document.getElementById('note-header');
+    const noteTitle = document.getElementById('note-title');
+    const noteSubject = document.getElementById('note-subject');
+    const noteContent = document.getElementById('note-content');
+    const backButton = document.getElementById('back-button');
+    const noteEmptyMessage = document.getElementById('note-empty-message');
+
+    const searchOverlay = document.getElementById('search-overlay');
+    const searchInput = document.getElementById('search-input');
+    const searchResults = document.getElementById('search-results');
+    const searchCloseBtn = document.getElementById('search-close-btn');
+
+    function renderSubjects(subjects) {
+      bottomNav.innerHTML = '';
+      subjects.forEach(subject => {
+        const btn = document.createElement('button');
+        btn.textContent = subject;
+        btn.type = 'button';
+        btn.classList.add('subject-btn');
+        btn.setAttribute('aria-pressed', 'false');
+        btn.addEventListener('click', () => {
+          if (currentSubject !== subject) {
+            selectSubject(subject);
+          }
+        });
+        bottomNav.appendChild(btn);
+      });
+      // Search icon minimal black svg
+      const searchBtn = document.createElement('button');
+      searchBtn.id = 'search-btn';
+      searchBtn.setAttribute('aria-label', 'Open search topics');
+      searchBtn.title = 'Search topics';
+      searchBtn.innerHTML = `
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" 
+          viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+          width="20" height="20">
+          <circle cx="11" cy="11" r="7"/>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>`;
+      searchBtn.addEventListener('click', openSearchOverlay);
+      bottomNav.appendChild(searchBtn);
+    }
+
+    function updateSubjectNavActive() {
+      const buttons = bottomNav.querySelectorAll('button.subject-btn');
+      buttons.forEach(btn => {
+        if (btn.textContent === currentSubject) {
+          btn.classList.add('active');
+          btn.setAttribute('aria-pressed', 'true');
+        } else {
+          btn.classList.remove('active');
+          btn.setAttribute('aria-pressed', 'false');
         }
-      }
-    },
-    math: { name: "Math", topics: {} },
-    english: { name: "English Grammar", topics: {} },
-    computer: { name: "Computer", topics: {} }
-  };
-
-  let currentSubjectKey = "current";
-  let currentTopicKey = null;
-  let searchActive = false;
-
-  const topicListEl = document.getElementById("topicList");
-  const readingPageEl = document.getElementById("readingPage");
-  const readingContentEl = document.getElementById("readingContent");
-  const appHeaderEl = document.getElementById("appHeader");
-  const searchToggleBtn = document.getElementById("searchToggle");
-  const searchBarEl = document.getElementById("searchBar");
-  const searchInputEl = document.getElementById("searchInput");
-  const navButtons = document.querySelectorAll(".bubble-nav");
-  const backToTopicsBtn = document.getElementById("backToTopics");
-  const loadFileBtn = document.getElementById("loadFileBtn");
-  const fileInput = document.getElementById("fileInput");
-
-  // Load data from CSV rows into data object
-  function loadDataFromCSV(rows) {
-    // Clear existing math, english, computer, and also merge current (adding new current topics)
-    ['math', 'english', 'computer'].forEach(subj => data[subj].topics = {});
-    rows.forEach(row => {
-      const subject = row.subject.toLowerCase();
-      if (!data[subject]) {
-        data[subject] = { name: row.subject, topics: {} };
-      }
-      const key = row.topicKey || `topic${Object.keys(data[subject].topics).length + 1}`;
-      data[subject].topics[key] = {
-        title: row.title || "",
-        description: row.description || "",
-        detailed: row.detailed || "",
-        date: row.date || "",
-        content: row.content || ""
-      };
-    });
-    // Ensure any new current topics are merged instead of replacing
-    // (We do not clear 'current' topics before loading csv for current)
-    const csvCurrentTopics = rows.filter(r => r.subject.toLowerCase().trim() === "current");
-    csvCurrentTopics.forEach(row => {
-      const k = row.topicKey || `topic${Object.keys(data.current.topics).length + 1}`;
-      data.current.topics[k] = {
-        title: row.title || "",
-        description: row.description || "",
-        detailed: row.detailed || "",
-        date: row.date || "",
-        content: row.content || ""
-      };
-    });
-    // Refresh current view if current subject is active
-    if (currentSubjectKey && data[currentSubjectKey]) {
-      renderTopicList(currentSubjectKey);
-      showTopicList();
-    }
-  }
-
-  function setActiveNav(subj) {
-    navButtons.forEach((btn) => {
-      const active = btn.dataset.subject === subj;
-      btn.classList.toggle("active", active);
-      btn.setAttribute("aria-selected", active ? "true" : "false");
-      btn.tabIndex = active ? 0 : -1;
-    });
-  }
-
-  function showTopicList() {
-    readingPageEl.style.display = "none";
-    topicListEl.style.display = "block";
-    appHeaderEl.textContent = data[currentSubjectKey]?.name || "";
-    readingPageEl.scrollTop = 0;
-    topicListEl.scrollTop = 0;
-  }
-
-  function showReadingPage() {
-    topicListEl.style.display = "none";
-    readingPageEl.style.display = "block";
-    readingPageEl.focus();
-    topicListEl.scrollTop = 0;
-    readingPageEl.scrollTop = 0;
-  }
-
-  function clearSearch() {
-    searchInputEl.value = "";
-    searchBarEl.style.display = "none";
-    searchActive = false;
-  }
-
-  function renderTopicList(subj, filter = "") {
-    topicListEl.innerHTML = "";
-    const subject = data[subj];
-    if (!subject) return;
-    const keys = Object.keys(subject.topics);
-    const filterLower = (filter || "").toLowerCase().trim();
-    const filteredKeys = filterLower === ""
-      ? keys
-      : keys.filter(
-          (k) =>
-            subject.topics[k].title.toLowerCase().includes(filterLower) ||
-            subject.topics[k].description.toLowerCase().includes(filterLower) ||
-            (subject.topics[k].detailed && subject.topics[k].detailed.toLowerCase().includes(filterLower))
-        );
-    if (filteredKeys.length === 0) {
-      topicListEl.innerHTML = `<li class="no-result">No topics found.</li>`;
-      return;
-    }
-    filteredKeys.forEach((key) => {
-      const topic = subject.topics[key];
-      const li = document.createElement("li");
-      li.tabIndex = 0;
-      li.className = "topic-item";
-      const icons = {
-        current: "fa-globe",
-        math: "fa-square-root-variable",
-        english: "fa-book-open",
-        computer: "fa-laptop-code",
-      };
-      const icon = icons[subj] || "fa-circle";
-      li.innerHTML = `<i class="fa-solid ${icon}"></i> ${topic.title}`;
-      li.onclick = () => selectTopic(key);
-      li.onkeydown = (e) => {
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
-          selectTopic(key);
-        }
-      };
-      topicListEl.appendChild(li);
-    });
-  }
-
-  function selectTopic(key) {
-    const subject = data[currentSubjectKey];
-    if (!subject) return;
-    const topic = subject.topics[key];
-    if (!topic) return;
-    currentTopicKey = key;
-    appHeaderEl.textContent = `${subject.name} - ${topic.title}`;
-    readingContentEl.innerHTML = `<h2>${topic.title}</h2><p><em>${topic.description}</em></p>${topic.detailed || ""}`;
-    showReadingPage();
-    clearSearch();
-  }
-
-  navButtons.forEach((btn) => {
-    btn.addEventListener("click", () => {
-      selectSubject(btn.dataset.subject);
-    });
-    btn.addEventListener("keydown", (e) => {
-      if (e.key === "Enter" || e.key === " ") {
-        e.preventDefault();
-        selectSubject(btn.dataset.subject);
-      }
-    });
-  });
-
-  searchToggleBtn.addEventListener("click", () => {
-    if (searchActive) {
-      clearSearch();
-      renderTopicList(currentSubjectKey);
-      showTopicList();
-    } else {
-      searchBarEl.style.display = "block";
-      searchInputEl.focus();
-      searchActive = true;
-    }
-  });
-
-  searchInputEl.addEventListener("input", () => {
-    renderTopicList(currentSubjectKey, searchInputEl.value);
-    showTopicList();
-  });
-
-  backToTopicsBtn.addEventListener("click", () => {
-    clearSearch();
-    renderTopicList(currentSubjectKey);
-    showTopicList();
-    appHeaderEl.textContent = data[currentSubjectKey].name;
-  });
-
-  loadFileBtn.addEventListener("click", () => fileInput.click());
-
-  fileInput.addEventListener("change", (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      Papa.parse(file, {
-        header: true,
-        skipEmptyLines: true,
-        complete: (results) => {
-          loadDataFromCSV(results.data);
-        },
-        error: (err) => {
-          alert("Error parsing CSV: " + err.message);
-        },
       });
     }
-  });
 
-  function selectSubject(subj) {
-    if (currentSubjectKey === subj) return;
-    currentSubjectKey = subj;
-    currentTopicKey = null;
-    clearSearch();
-    setActiveNav(subj);
-    renderTopicList(subj);
-    showTopicList();
-  }
+    function renderTopics() {
+      topicsList.innerHTML = '';
+      if (!currentSubject || !notesData) {
+        topicsHeader.textContent = 'Select a subject to view topics';
+        hideNotePanel();
+        return;
+      }
+      const subjTopics = notesData[currentSubject];
+      if (!subjTopics) {
+        topicsHeader.textContent = `No data found for subject: ${currentSubject}`;
+        hideNotePanel();
+        return;
+      }
+      topicsHeader.textContent = `Topics in ${currentSubject}`;
+      const topics = Object.keys(subjTopics).sort();
+      if (topics.length === 0) {
+        const li = document.createElement('li');
+        li.textContent = 'No topics available.';
+        topicsList.appendChild(li);
+        hideNotePanel();
+        return;
+      }
+      topics.forEach(topic => {
+        const li = document.createElement('li');
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.textContent = topic;
+        btn.setAttribute('aria-pressed', 'false');
+        btn.addEventListener('click', () => {
+          openNoteView(topic);
+        });
+        li.appendChild(btn);
+        topicsList.appendChild(li);
+      });
+      showTopicsPanel();
+      hideNotePanel();
+    }
 
-  window.addEventListener("load", () => {
-    setActiveNav(currentSubjectKey);
-    renderTopicList(currentSubjectKey);
-    showTopicList();
-  });
-})();
+    function openNoteView(topic) {
+      currentTopic = topic;
+      const noteText = notesData[currentSubject][topic] || '(No notes available)';
+      noteTitle.textContent = topic;
+      noteSubject.textContent = currentSubject;
+      noteEmptyMessage.style.display = 'none';
+      noteContent.textContent = noteText;
+      notePanel.style.display = 'flex';
+      backButton.focus();
+      hideTopicsPanel();
+    }
+
+    backButton.addEventListener('click', () => {
+      currentTopic = null;
+      showTopicsPanel();
+      hideNotePanel();
+    });
+
+    function showTopicsPanel() {
+      document.getElementById('topics-panel').style.display = 'flex';
+    }
+    function hideTopicsPanel() {
+      document.getElementById('topics-panel').style.display = 'none';
+    }
+    function hideNotePanel() {
+      notePanel.style.display = 'none';
+      noteEmptyMessage.style.display = 'block';
+      noteTitle.textContent = '';
+      noteSubject.textContent = '';
+      noteContent.textContent = '';
+    }
+
+    function clearNoteView() {
+      currentTopic = null;
+      hideNotePanel();
+      showTopicsPanel();
+    }
+
+    function selectSubject(subject) {
+      currentSubject = subject;
+      currentTopic = null;
+      updateSubjectNavActive();
+      renderTopics();
+      clearNoteView();
+    }
+
+    function openSearchOverlay() {
+      searchOverlay.style.display = 'flex';
+      searchInput.value = '';
+      searchResults.innerHTML = '';
+      searchOverlay.focus();
+      searchInput.focus();
+      document.body.style.overflow = 'hidden';
+    }
+    function closeSearchOverlay() {
+      searchOverlay.style.display = 'none';
+      document.body.style.overflow = '';
+      searchInput.value = '';
+      searchResults.innerHTML = '';
+    }
+    searchCloseBtn.addEventListener('click', closeSearchOverlay);
+    searchOverlay.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        closeSearchOverlay();
+      }
+    });
+
+    let searchTimeout = null;
+    searchInput.addEventListener('input', () => {
+      if (searchTimeout) clearTimeout(searchTimeout);
+      searchTimeout = setTimeout(runSearch, 250);
+    });
+
+    function escapeHtml(text) {
+      return text.replace(/[&<>"']/g, m => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+      }[m]));
+    }
+
+    function runSearch() {
+      const query = searchInput.value.trim().toLowerCase();
+      searchResults.innerHTML = '';
+      if (!query) return;
+      const matches = [];
+      for (const subject in notesData) {
+        if (!notesData.hasOwnProperty(subject)) continue;
+        for (const topic in notesData[subject]) {
+          if (!notesData[subject].hasOwnProperty(topic)) continue;
+          if (topic.toLowerCase().includes(query) ||
+              notesData[subject][topic].toLowerCase().includes(query)) {
+            matches.push({subject, topic});
+          }
+        }
+      }
+      if (matches.length === 0) {
+        const li = document.createElement('li');
+        li.textContent = 'No results found.';
+        searchResults.appendChild(li);
+        return;
+      }
+      matches.forEach(match => {
+        const li = document.createElement('li');
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.innerHTML = `<strong>${escapeHtml(match.topic)}</strong> <small style="color:#666;">in ${escapeHtml(match.subject)}</small>`;
+        btn.addEventListener('click', () => {
+          closeSearchOverlay();
+          selectSubject(match.subject);
+          setTimeout(() => openNoteView(match.topic), 100);
+        });
+        li.appendChild(btn);
+        searchResults.appendChild(li);
+      });
+    }
+
+    window.addEventListener('keydown', e => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
+        e.preventDefault();
+        openSearchOverlay();
+      }
+    });
+
+    function init() {
+      renderSubjects(Object.keys(notesData));
+    }
+    init();
+  })();
 </script>
 </body>
 </html>
+
