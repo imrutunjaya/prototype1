@@ -1,0 +1,56 @@
+{
+  "Maths": [
+    { "title": "Quadratic Formula", "content": "x = [-b ± √(b² - 4ac)] / 2a" },
+    { "title": "Pythagorean Theorem", "content": "a² + b² = c²" },
+    { "title": "Area of Circle", "content": "A = πr²" },
+    { "title": "Circumference of Circle", "content": "C = 2πr" },
+    { "title": "Simple Interest", "content": "SI = (P × R × T) / 100" },
+    { "title": "Compound Interest", "content": "CI = P(1 + R/100)^T - P" },
+    { "title": "Slope of Line", "content": "m = (y2 - y1) / (x2 - x1)" },
+    { "title": "Distance Formula", "content": "d = √[(x2 - x1)² + (y2 - y1)²]" },
+    { "title": "Volume of Sphere", "content": "V = (4/3)πr³" },
+    { "title": "Trigonometric Identity", "content": "sin²θ + cos²θ = 1" }
+  ],
+
+  "AI Features": [
+    { "title": "What is AI?", "content": "Artificial Intelligence is the simulation of human intelligence in machines." },
+    { "title": "Applications of AI", "content": "Chatbots, image recognition, speech synthesis, recommendation systems." },
+    { "title": "Types of AI", "content": "1. Narrow AI\n2. General AI\n3. Super AI" },
+    { "title": "Machine Learning", "content": "A subset of AI that allows machines to learn from data without being explicitly programmed." },
+    { "title": "Deep Learning", "content": "A subfield of machine learning using neural networks with many layers." },
+    { "title": "Natural Language Processing", "content": "NLP enables machines to understand and respond in human language." },
+    { "title": "Popular AI Tools", "content": "TensorFlow, PyTorch, OpenAI GPT, Scikit-learn" },
+    { "title": "Ethics in AI", "content": "AI should be transparent, fair, and used responsibly to avoid bias or harm." },
+    { "title": "AI in Education", "content": "Smart tutoring, plagiarism detection, automated grading, personalized learning." }
+  ],
+
+  "English": [
+    { "title": "Parts of Speech", "content": "Noun, Pronoun, Verb, Adjective, Adverb, Preposition, Conjunction, Interjection." },
+    { "title": "Tenses", "content": "Past, Present, Future with their simple, continuous, perfect, and perfect continuous forms." },
+    { "title": "Subject-Verb Agreement", "content": "Subjects and verbs must agree in number and person." },
+    { "title": "Common Idioms", "content": "Examples: Break the ice, Hit the sack, Let the cat out of the bag." },
+    { "title": "Sentence Types", "content": "Declarative, Interrogative, Imperative, and Exclamatory." }
+  ],
+
+  "Computer": [
+    { "title": "What is a Computer?", "content": "An electronic device that processes data to produce meaningful information." },
+    { "title": "Input Devices", "content": "Keyboard, Mouse, Scanner, Microphone." },
+    { "title": "Output Devices", "content": "Monitor, Printer, Speaker." },
+    { "title": "Operating System", "content": "Software that manages hardware and software resources." },
+    { "title": "Basic Programming Languages", "content": "Python, Java, C++, JavaScript." }
+  ],
+
+  "Tips & Tricks": [
+    { "title": "Study Tip: Pomodoro", "content": "Study for 25 minutes, then take a 5-minute break." },
+    { "title": "Memory Trick: Acronyms", "content": "Use acronyms to remember lists or sequences easily." },
+    { "title": "Time Management", "content": "Prioritize tasks using the Eisenhower Matrix (urgent vs important)." },
+    { "title": "Focus Techniques", "content": "Eliminate distractions, use noise-canceling headphones, stay hydrated." }
+  ],
+
+  "Current Affairs": [
+    { "title": "Latest Nobel Prize (2024)", "content": "Winners announced for Physics, Chemistry, Peace, Literature, Medicine, and Economics." },
+    { "title": "Global Climate Summit", "content": "Countries discuss carbon neutrality, green energy, and climate funding." },
+    { "title": "Tech Launches 2024", "content": "Apple, Google, and Tesla announce major innovations in AI and hardware." },
+    { "title": "Elections and Governance", "content": "Recent elections in various nations and their global impact." }
+  ]
+}
