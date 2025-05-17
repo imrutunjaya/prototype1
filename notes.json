@@ -1,0 +1,28 @@
+{
+  "Math": {
+    "Algebra": "Algebra is the study of mathematical symbols and the rules for manipulating these symbols. Includes operations like solving equations.",
+    "Geometry": "Geometry deals with the properties and relations of points, lines, surfaces, and solids.",
+    "Calculus": "Calculus involves the study of change, in the form of differentiation and integration."
+  },
+  "English": {
+    "Grammar": "Grammar is the set of structural rules governing the composition of clauses, phrases, and words in English.",
+    "Literature": "Literature includes written works such as poems, plays, novels, and essays.",
+    "Vocabulary": "Vocabulary represents the words known and used within a language."
+  },
+  "General Knowledge": {
+    "World Capitals": "A list of important capitals around the world, e.g. Washington D.C. (USA), Tokyo (Japan), Paris (France).",
+    "Famous Personalities": "Details about influential people in history and contemporary times."
+  },
+  "Computer": {
+    "Programming Basics": "Programming involves writing instructions for computers using languages like Python, JavaScript, and C++.",
+    "Data Structures": "Data structures organize and store data efficiently, examples: arrays, linked lists, trees, and graphs."
+  },
+  "Formula": {
+    "Physics Formulas": "Physics formulas include E=mc², F=ma, and formulas for velocity, acceleration, and more.",
+    "Math Formulas": "Common math formulas like quadratic formula, area of circle, Pythagorean theorem."
+  },
+  "Tricks": {
+    "Math Tricks": "Math tricks help quickly solve problems, for example multiplying by 11, squaring numbers ending with 5.",
+    "Memory Tricks": "Techniques to improve memory such as mnemonics, visualization, and chunking."
+  }
+}
