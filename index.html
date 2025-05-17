@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Study Dictionary & Current Affairs</title>
+<!-- Font Awesome CDN for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<!-- Papa Parse CDN for CSV parsing -->
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body, html {
+    margin: 0; padding: 0;
+    font-family: 'Poppins', sans-serif;
+    background: #ffffff;
+    color: #000000;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  header {
+    background: #ffffff;
+    border-bottom: 1px solid #ccc;
+    color: #000;
+    padding: 10px 16px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 14px;
+    user-select: none;
+    position: relative;
+  }
+
+  main {
+    flex: 1;
+    overflow-y: auto;
+    padding: 14px 12px 90px 12px;
+    max-width: 900px;
+    margin: auto;
+    width: 100%;
+  }
+
+  /* File load button */
+  #loadFileBtn {
+    position: fixed;
+    top: 12px;
+    left: 16px;
+    background: #000000;
+    color: white;
+    border: none;
+    padding: 8px 18px;
+    font-size: 14px;
+    border-radius: 3px;
+    user-select: none;
+    cursor: pointer;
+    z-index: 1103;
+  }
+  #loadFileBtn:hover {
+    background-color: #222222;
+  }
+  #fileInput {
+    display: none;
+  }
+
+  /* Bottom Navigation Bar */
+  footer {
+    background: #ffffff;
+    box-shadow: 0 -1px 5px rgba(0,0,0,0.1);
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 56px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0 8px;
+    z-index: 1000;
+    border-top: 1px solid #ccc;
+  }
+
+  .bubble-nav {
+    background-color: #000000;
+    border: none;
+    padding: 8px 20px;
+    font-weight: 600;
+    color: white;
+    cursor: pointer;
+    font-size: 12px;
+    min-width: 80px;
+    text-align: center;
+    user-select: none;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+    border-radius: 4px;
+    letter-spacing: 0.05em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .bubble-nav i {
+    font-size: 1.1rem;
+  }
+  .bubble-nav.active {
+    background-color: #222222;
+    transform: scale(1.1);
+  }
+  .bubble-nav:hover:not(.active) {
+    background-color: #333333;
+  }
+
+  /* Search Bar */
+  #searchBar {
+    position: fixed;
+    bottom: 65px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 700px;
+    background: white;
+    border: 1px solid #000;
+    padding: 6px 14px;
+    display: none;
+    z-index: 1050;
+  }
+  #searchInput {
+    width: 100%;
+    padding: 8px 12px;
+    font-size: 14px;
+    border: none;
+    outline: none;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: #000;
+    background: #f9f9f9;
+    border-radius: 5px;
+    box-sizing: border-box;
+  }
+  #searchInput::placeholder {
+    color: #666;
+  }
+  #searchInput:focus {
+    outline: none;
+    box-shadow: 0 0 8px #000000aa;
+  }
+  #searchToggle {
+    background: #000000;
+    border: none;
+    cursor: pointer;
+    position: fixed;
+    bottom: 120px;
+    right: 16px;
+    z-index: 1100;
+    font-size: 28px;
+    color: white;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    user-select: none;
+    border-radius: 6px;
+    box-shadow: none;
+    transition: background-color 0.2s ease;
+  }
+  #searchToggle:hover {
+    background-color: #222222;
+  }
+
+  /* Topic List */
+  #topicList {
+    list-style: none;
+    padding: 0;
+    margin: 0 auto;
+    max-width: 840px;
+  }
+  .topic-item {
+    background: #fefefe;
+    border: 2px solid #000000;
+    margin-bottom: 10px;
+    padding: 16px 22px;
+    cursor: pointer;
+    font-weight: 700;
+    color: #000000;
+    font-size: 14px;
+    width: 100%;
+    box-sizing: border-box;
+    user-select: none;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  .topic-item i {
+    font-size: 1.25rem;
+    color: #000;
+    flex-shrink: 0;
+  }
+  .topic-item:hover {
+    background-color: #000000;
+    color: #ffffff;
+    border-color: #000000;
+  }
+  .topic-item:focus-visible {
+    outline: 3px solid #000000;
+    outline-offset: 3px;
+    background-color: #222222;
+    color: #fff;
+  }
+
+  /* Reading Page */
+  #readingPage {
+    display: none;
+    max-width: 900px;
+    margin: 0 auto 90px;
+    background: #ffffff;
+    border: 2px solid #000000;
+    padding: 40px 48px;
+    line-height: 1.6;
+    color: #000000;
+    font-size: 16px;
+    border-radius: 8px;
+    box-sizing: border-box;
+    overflow-y: auto;
+  }
+  #readingPage h2 {
+    color: #000000;
+    margin-top: 0;
+    font-size: 28px;
+    font-weight: 800;
+    margin-bottom: 36px;
+    letter-spacing: 0.05em;
+  }
+  #readingPage h3 {
+    margin-top: 40px;
+    margin-bottom: 20px;
+    font-weight: 700;
+    color: #222222;
+    font-size: 22px;
+  }
+  #readingPage ul {
+    margin-left: 30px;
+    margin-bottom: 32px;
+    color: #111;
+    font-size: 16px;
+  }
+  #readingPage p {
+    margin-bottom: 24px;
+  }
+  #readingPage pre {
+    background: #f4f4f4;
+    padding: 18px;
+    overflow-x: auto;
+    border-radius: 6px;
+    font-size: 13px;
+    color: #333333;
+    margin-bottom: 24px;
+    font-family: "Courier New", Courier, monospace;
+  }
+  #backToTopics {
+    margin-bottom: 32px;
+    background: #000000;
+    color: white;
+    border: none;
+    padding: 16px 36px;
+    font-weight: 700;
+    font-size: 15px;
+    cursor: pointer;
+    border-radius: 8px;
+    user-select: none;
+    transition: background-color 0.25s ease;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  #backToTopics i {
+    font-size: 1.5rem;
+  }
+  #backToTopics:hover {
+    background-color: #222222;
+  }
+
+  /* Current Affairs reading style */
+  .current-affairs-carousel {
+    max-width: 900px;
+    margin: 0 auto;
+    background: #ffffff;
+    border: 2px solid #000000;
+    padding: 40px 48px;
+    color: #000000;
+    min-height: 280px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 16px;
+    border-radius: 8px;
+  }
+  .carousel-title {
+    font-size: 28px;
+    margin-bottom: 24px;
+    color: #000000;
+    font-weight: 800;
+  }
+  .carousel-date {
+    font-style: italic;
+    color: #444444;
+    margin-bottom: 32px;
+    font-size: 14px;
+  }
+  .carousel-content {
+    font-size: 16px;
+    line-height: 1.75;
+    font-weight: 700;
+    color: #222222;
+  }
+  .no-result {
+    font-weight: 700;
+    font-size: 14px;
+    color: #555555;
+    padding: 80px 0;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+<button id="loadFileBtn" aria-label="Load Topics CSV"><i class="fa-solid fa-file-csv"></i> Load Topics CSV</button>
+<input type="file" id="fileInput" accept=".csv,text/csv" />
+
+<header id="appHeader" tabindex="0" aria-live="polite" aria-atomic="true" aria-busy="false">Current Affairs</header>
+<div id="loadingIndicator" aria-hidden="true" style="display:none; position: absolute; right: 16px; top: 50%; transform: translateY(-50%); font-size: 16px; color: #1e3a8a; user-select: none;">Loading…</div>
+
+<main>
+  <!-- Topic List Page -->
+  <ul id="topicList" role="list" aria-label="Subject topics"></ul>
+
+  <!-- Reading Page: detailed content with back button -->
+  <section id="readingPage" tabindex="0" aria-live="polite" aria-atomic="true" style="display:none;">
+    <button id="backToTopics" aria-label="Back to topic list"><i class="fa-solid fa-arrow-left"></i> Back to Topics</button>
+    <div id="readingContent"></div>
+  </section>
+</main>
+
+<button id="searchToggle" aria-label="Toggle Search" title="Search" style="position: fixed; bottom: 120px; right: 16px; width: 56px; height: 56px; border-radius: 6px; background: #000; color: #fff; border: none; cursor: pointer; display: flex; justify-content: center; align-items: center; user-select: none; font-size: 28px; z-index: 1100;"><i class="fa-solid fa-magnifying-glass"></i></button>
+<div id="searchBar" role="search" style="position: fixed; bottom: 65px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 700px; background: white; border: 1px solid #000; padding: 8px 16px; display: none; z-index: 1050;">
+  <input type="search" id="searchInput" placeholder="Search notes and topics..." aria-label="Search notes and topics" autocomplete="off"
+         style="width: 100%; padding: 8px 16px; font-size: 14px; border: none; outline: none; font-weight: 700; letter-spacing: 0.03em; color: #000; background: #f9f9f9; border-radius: 6px; box-sizing: border-box;" />
+</div>
+
+<footer role="tablist" aria-label="Primary subjects navigation" style="background: #fff; border-top: 1px solid #ccc; box-shadow: 0 -1px 5px rgba(0,0,0,0.1); position: fixed; bottom: 0; width: 100%; height: 56px; display: flex; justify-content: space-around; align-items: center; padding: 0 8px; z-index: 1000;">
+  <button class="bubble-nav" data-subject="current" aria-selected="true" role="tab" tabindex="0" aria-controls="topicList" aria-label="Current Affairs"><i class="fa-solid fa-globe"></i>Current</button>
+  <button class="bubble-nav" data-subject="math" aria-selected="false" role="tab" tabindex="-1" aria-controls="topicList" aria-label="Math"><i class="fa-solid fa-square-root-variable"></i>Math</button>
+  <button class="bubble-nav" data-subject="english" aria-selected="false" role="tab" tabindex="-1" aria-controls="topicList" aria-label="English Grammar"><i class="fa-solid fa-book-open"></i>English</button>
+  <button class="bubble-nav" data-subject="computer" aria-selected="false" role="tab" tabindex="-1" aria-controls="topicList" aria-label="Computer"><i class="fa-solid fa-laptop-code"></i>Computer</button>
+</footer>
+
+<script src="https://kit.fontawesome.com/a81368914c.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+<script>
+(() => {
+  let data = {
+    current: {
+      name: "Current Affairs",
+      topics: {
+        "event1": {
+          title: "Global Climate Summit 2024",
+          description: "International commitments to climate action.",
+          detailed: `<h3>Overview</h3><p>In 2024, the global climate summit brought agreements among nations to reduce emissions and invest in sustainable technologies...</p>`,
+          date: "April 2024",
+          content: "World leaders' commitments for a better planet."
+        },
+        "event2": {
+          title: "Space Tourism Breakthrough",
+          description: "Historic commercial private space flight.",
+          detailed: `<h3>Flight milestone</h3><p>Advances in reusable rockets enable new tourism possibilities...</p>`,
+          date: "May 2024",
+          content: "Opening space for all."
+        }
+      }
+    },
+    math: { name: "Math", topics: {} },
+    english: { name: "English Grammar", topics: {} },
+    computer: { name: "Computer", topics: {} }
+  };
+
+  let currentSubjectKey = "current";
+  let currentTopicKey = null;
+  let searchActive = false;
+
+  const topicListEl = document.getElementById("topicList");
+  const readingPageEl = document.getElementById("readingPage");
+  const readingContentEl = document.getElementById("readingContent");
+  const appHeaderEl = document.getElementById("appHeader");
+  const searchToggleBtn = document.getElementById("searchToggle");
+  const searchBarEl = document.getElementById("searchBar");
+  const searchInputEl = document.getElementById("searchInput");
+  const navButtons = document.querySelectorAll(".bubble-nav");
+  const backToTopicsBtn = document.getElementById("backToTopics");
+  const loadFileBtn = document.getElementById("loadFileBtn");
+  const fileInput = document.getElementById("fileInput");
+
+  // Load data from CSV rows into data object
+  function loadDataFromCSV(rows) {
+    // Clear existing math, english, computer, and also merge current (adding new current topics)
+    ['math', 'english', 'computer'].forEach(subj => data[subj].topics = {});
+    rows.forEach(row => {
+      const subject = row.subject.toLowerCase();
+      if (!data[subject]) {
+        data[subject] = { name: row.subject, topics: {} };
+      }
+      const key = row.topicKey || `topic${Object.keys(data[subject].topics).length + 1}`;
+      data[subject].topics[key] = {
+        title: row.title || "",
+        description: row.description || "",
+        detailed: row.detailed || "",
+        date: row.date || "",
+        content: row.content || ""
+      };
+    });
+    // Ensure any new current topics are merged instead of replacing
+    // (We do not clear 'current' topics before loading csv for current)
+    const csvCurrentTopics = rows.filter(r => r.subject.toLowerCase().trim() === "current");
+    csvCurrentTopics.forEach(row => {
+      const k = row.topicKey || `topic${Object.keys(data.current.topics).length + 1}`;
+      data.current.topics[k] = {
+        title: row.title || "",
+        description: row.description || "",
+        detailed: row.detailed || "",
+        date: row.date || "",
+        content: row.content || ""
+      };
+    });
+    // Refresh current view if current subject is active
+    if (currentSubjectKey && data[currentSubjectKey]) {
+      renderTopicList(currentSubjectKey);
+      showTopicList();
+    }
+  }
+
+  function setActiveNav(subj) {
+    navButtons.forEach((btn) => {
+      const active = btn.dataset.subject === subj;
+      btn.classList.toggle("active", active);
+      btn.setAttribute("aria-selected", active ? "true" : "false");
+      btn.tabIndex = active ? 0 : -1;
+    });
+  }
+
+  function showTopicList() {
+    readingPageEl.style.display = "none";
+    topicListEl.style.display = "block";
+    appHeaderEl.textContent = data[currentSubjectKey]?.name || "";
+    readingPageEl.scrollTop = 0;
+    topicListEl.scrollTop = 0;
+  }
+
+  function showReadingPage() {
+    topicListEl.style.display = "none";
+    readingPageEl.style.display = "block";
+    readingPageEl.focus();
+    topicListEl.scrollTop = 0;
+    readingPageEl.scrollTop = 0;
+  }
+
+  function clearSearch() {
+    searchInputEl.value = "";
+    searchBarEl.style.display = "none";
+    searchActive = false;
+  }
+
+  function renderTopicList(subj, filter = "") {
+    topicListEl.innerHTML = "";
+    const subject = data[subj];
+    if (!subject) return;
+    const keys = Object.keys(subject.topics);
+    const filterLower = (filter || "").toLowerCase().trim();
+    const filteredKeys = filterLower === ""
+      ? keys
+      : keys.filter(
+          (k) =>
+            subject.topics[k].title.toLowerCase().includes(filterLower) ||
+            subject.topics[k].description.toLowerCase().includes(filterLower) ||
+            (subject.topics[k].detailed && subject.topics[k].detailed.toLowerCase().includes(filterLower))
+        );
+    if (filteredKeys.length === 0) {
+      topicListEl.innerHTML = `<li class="no-result">No topics found.</li>`;
+      return;
+    }
+    filteredKeys.forEach((key) => {
+      const topic = subject.topics[key];
+      const li = document.createElement("li");
+      li.tabIndex = 0;
+      li.className = "topic-item";
+      const icons = {
+        current: "fa-globe",
+        math: "fa-square-root-variable",
+        english: "fa-book-open",
+        computer: "fa-laptop-code",
+      };
+      const icon = icons[subj] || "fa-circle";
+      li.innerHTML = `<i class="fa-solid ${icon}"></i> ${topic.title}`;
+      li.onclick = () => selectTopic(key);
+      li.onkeydown = (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          selectTopic(key);
+        }
+      };
+      topicListEl.appendChild(li);
+    });
+  }
+
+  function selectTopic(key) {
+    const subject = data[currentSubjectKey];
+    if (!subject) return;
+    const topic = subject.topics[key];
+    if (!topic) return;
+    currentTopicKey = key;
+    appHeaderEl.textContent = `${subject.name} - ${topic.title}`;
+    readingContentEl.innerHTML = `<h2>${topic.title}</h2><p><em>${topic.description}</em></p>${topic.detailed || ""}`;
+    showReadingPage();
+    clearSearch();
+  }
+
+  navButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      selectSubject(btn.dataset.subject);
+    });
+    btn.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        selectSubject(btn.dataset.subject);
+      }
+    });
+  });
+
+  searchToggleBtn.addEventListener("click", () => {
+    if (searchActive) {
+      clearSearch();
+      renderTopicList(currentSubjectKey);
+      showTopicList();
+    } else {
+      searchBarEl.style.display = "block";
+      searchInputEl.focus();
+      searchActive = true;
+    }
+  });
+
+  searchInputEl.addEventListener("input", () => {
+    renderTopicList(currentSubjectKey, searchInputEl.value);
+    showTopicList();
+  });
+
+  backToTopicsBtn.addEventListener("click", () => {
+    clearSearch();
+    renderTopicList(currentSubjectKey);
+    showTopicList();
+    appHeaderEl.textContent = data[currentSubjectKey].name;
+  });
+
+  loadFileBtn.addEventListener("click", () => fileInput.click());
+
+  fileInput.addEventListener("change", (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      Papa.parse(file, {
+        header: true,
+        skipEmptyLines: true,
+        complete: (results) => {
+          loadDataFromCSV(results.data);
+        },
+        error: (err) => {
+          alert("Error parsing CSV: " + err.message);
+        },
+      });
+    }
+  });
+
+  function selectSubject(subj) {
+    if (currentSubjectKey === subj) return;
+    currentSubjectKey = subj;
+    currentTopicKey = null;
+    clearSearch();
+    setActiveNav(subj);
+    renderTopicList(subj);
+    showTopicList();
+  }
+
+  window.addEventListener("load", () => {
+    setActiveNav(currentSubjectKey);
+    renderTopicList(currentSubjectKey);
+    showTopicList();
+  });
+})();
+</script>
+</body>
+</html>
