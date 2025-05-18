@@ -1,15 +1,17 @@
 {
   "Maths": [
-    { "title": "Quadratic Formula", "content": "x = [-b ± √(b² - 4ac)] / 2a" },
-    { "title": "Pythagorean Theorem", "content": "a² + b² = c²" },
-    { "title": "Area of Circle", "content": "A = πr²" },
-    { "title": "Circumference of Circle", "content": "C = 2πr" },
-    { "title": "Simple Interest", "content": "SI = (P × R × T) / 100" },
-    { "title": "Compound Interest", "content": "CI = P(1 + R/100)^T - P" },
-    { "title": "Slope of Line", "content": "m = (y2 - y1) / (x2 - x1)" },
-    { "title": "Distance Formula", "content": "d = √[(x2 - x1)² + (y2 - y1)²]" },
-    { "title": "Volume of Sphere", "content": "V = (4/3)πr³" },
-    { "title": "Trigonometric Identity", "content": "sin²θ + cos²θ = 1" }
+    { "title": "Number system", "content": "x = [-b ± √(b² - 4ac)] / 2a" },
+    { "title": "HCF & LCM of numbers", "content": "a² + b² = c²" },
+    { "title": "Decimal fraction", "content": "A = πr²" },
+    { "title": "Simplification", "content": "C = 2πr" },
+    { "title": "Square root and cube root", "content": "SI = (P × R × T) / 100" },
+    { "title": "Average , Profit and loss", "content": "CI = P(1 + R/100)^T - P" },
+    { "title": "Problem on Number & Age,Train", "content": "m = (y2 - y1) / (x2 - x1)" },
+    { "title": "log, sruds and indices", "content": "d = √[(x2 - x1)² + (y2 - y1)²]" },
+    { "title": "Percentage, Ratio and proportion", "content": "V = (4/3)πr³" },
+    { "title": "Simple/compound Intrest ", "content": "sin²θ + cos²θ = 1" },
+    { "title": "Area, volume and surface area  ", "content": "sin²θ + cos²θ = 1" },
+    { "title": "permuntation and combination  ", "content": "sin²θ + cos²θ = 1" }
   ],
 
   "AI Features": [
@@ -44,7 +46,14 @@
     { "title": "Study Tip: Pomodoro", "content": "Study for 25 minutes, then take a 5-minute break." },
     { "title": "Memory Trick: Acronyms", "content": "Use acronyms to remember lists or sequences easily." },
     { "title": "Time Management", "content": "Prioritize tasks using the Eisenhower Matrix (urgent vs important)." },
-    { "title": "Focus Techniques", "content": "Eliminate distractions, use noise-canceling headphones, stay hydrated." }
+    { "title": "Focus Techniques", "content": "Eliminate distractions, use noise-canceling headphones, stay hydrated." },
+    { "title": "Partnership", "content": "Prioritize tasks using the Eisenhower Matrix (urgent vs important)." },
+    { "title": "chain rules", "content": "Prioritize tasks using the Eisenhower Matrix (urgent vs important)." },
+    { "title": "pipes and cisterns", "content": "Prioritize tasks using the Eisenhower Matrix (urgent vs important)." },
+    { "title": "Time&(work, distance)", "content": "Prioritize tasks using the Eisenhower Matrix (urgent vs important)." },
+    { "title": "Boat &Stream", "content": "Prioritize tasks using the Eisenhower Matrix (urgent vs important)." },
+    { "title": "Alligation &mixture", "content": "Prioritize tasks using the Eisenhower Matrix (urgent vs important)." },
+    { "title": "Banking & Graph", "content": "Prioritize tasks using the Eisenhower Matrix (urgent vs important)." }   
   ],
 
   "Current Affairs": [
