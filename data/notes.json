@@ -1,6 +1,190 @@
 {
   "Maths": [
-    { "title": "Number system", "content": "x = [-b ± √(b² - 4ac)] / 2a" },
+    { "title": "Number system", "content": "
+---
+
+1. Number System: Basics and Classification
+
+Types of Numbers:
+
+
+---
+
+2. Fundamental Concepts
+
+a. Divisibility Rules (Shortcuts)
+
+
+---
+
+3. Factorial (!)
+
+Definition:
+n! = n × (n - 1) × (n - 2) × ... × 1
+Example:
+5! = 5×4×3×2×1 = 120
+
+Useful Concepts:
+
+0! = 1 (by definition)
+
+Trailing zeros in n!:
+Count how many times 5 is a factor:
+n/5 + n/25 + n/125 + ...
+(Use floor division)
+
+
+
+---
+
+4. Modulus (|a|)
+
+Definition:
+|a| = a if a ≥ 0
+|a| = -a if a < 0
+
+Examples:
+
+|5| = 5
+
+|-3| = 3
+
+|x| = a → x = ±a
+
+
+
+---
+
+5. Greatest Integer Function (GIF) or Floor Function
+
+Notation: ⌊x⌋ or [x]
+It gives the greatest integer less than or equal to x.
+
+Examples:
+
+⌊3.7⌋ = 3
+
+⌊-2.4⌋ = -3
+
+⌊5⌋ = 5
+Note: Think of this as "rounding down."
+
+
+
+---
+
+6. Shortcut Tricks for Multiplication
+
+a. Vedic Math Tricks:
+
+i. Multiplying numbers near base:
+
+Example: 98 × 97 (close to 100)
+→ 98 = 100 - 2
+→ 97 = 100 - 3
+→ Cross-subtract: 98 - 3 = 95
+→ Multiply differences: 2×3 = 06
+→ Answer = 9506
+
+
+ii. 2-digit × 2-digit:
+
+Example: 23 × 21
+Use formula:
+(20+3)(20+1) = 400 + 20 + 60 + 3 = 483
+
+
+
+---
+
+7. Prime Numbers and Co-primes
+
+Prime Number: Has only 2 factors: 1 and itself
+(e.g., 2, 3, 5, 7, 11, ...)
+
+Co-prime Numbers: GCD = 1 (e.g., 4 and 9)
+
+
+
+---
+
+8. LCM and HCF (Shortcut Approach)
+
+HCF (GCD):
+
+Prime factorization and choose lowest powers
+
+
+LCM:
+
+Prime factorization and choose highest powers
+
+
+Shortcut formula:
+HCF × LCM = Product of two numbers
+
+
+---
+
+9. Types of Questions
+
+a. Find last digit:
+
+Look for cyclicity (pattern of units digit):
+
+2^1 = 2, 2^2 = 4, 2^3 = 8, 2^4 = 6, then repeat
+
+
+b. Find number of zeroes in a factorial:
+
+Use n/5 + n/25 + n/125 + ...
+
+c. Division by modulus:
+
+(a mod m) = Remainder when a is divided by m
+
+
+---
+
+10. Short Tricks for Fast Calculations
+
+Multiplication by 5:
+n × 5 = (n × 10) ÷ 2
+
+Squaring ending in 5:
+(25)² → 2×3 = 6 → 625
+i.e., (a5)² = a(a+1)25
+
+
+
+---
+
+11. Important Number Properties
+
+Even × Even = Even
+
+Odd × Odd = Odd
+
+Even + Odd = Odd
+
+Odd + Odd = Even
+
+
+
+---
+
+Want Practice? Here's a Sample Mini-Test:
+
+1. Is 987 divisible by 3?
+
+
+2. Find the last digit of 7^103.
+
+
+3. What is the value of ⌊-5.8⌋?
+
+
+4. How many zeros in 100!?" },
     { "title": "HCF & LCM of numbers", "content": "a² + b² = c²" },
     { "title": "Decimal fraction", "content": "A = πr²" },
     { "title": "Simplification", "content": "C = 2πr" },
